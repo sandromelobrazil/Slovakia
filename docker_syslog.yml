@@ -1,0 +1,25 @@
+---
+# Verificar a existencia de um arquivo
+- name: Enable Syslog feature
+  hosts: docker
+
+  tasks:
+          - name: Identify if there is the daemon.json file
+            command: test -f /etc/docker/daemon.json
+            register: result
+            ignore_errors: yes
+
+          - name: STOP Docker Deamon
+            service:
+                    name: docker
+                    state: stopped
+
+          - name: COPY daemon.json TEMPLATE
+            copy:  src=/opt/ansible/files/daemon.json  dest=/etc/docker/daemon.json
+            when: result.rc == 1
+         
+          - name: START Docker Deamon
+            service:
+                    name: docker
+                    state: started
+

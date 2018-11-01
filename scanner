@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+'''
+@author: Sandro Melo
+basenado em  http://xael.org/norman/python/python-nmap
+
+NMAP integration classes and modules
+'''
+
+import sys
+import os
+
+try:
+    import nmap
+except:
+    print('Big problem -> Not found modulo nmap:',sys.exc_info()[0])
+    print('This script was write to Python 3')
+    sys.exit(0)
+
+
+try:
+    ninja = nmap.PortScanner()
+except nmap.PortScannerError:
+    print('Modulo Nmap not found:', sys.exc_info()[0])
+    sys.exit(0)
+except:
+    print('Big problem -> Unexpect Error:',sys.exc_info()[0])
+    sys.exit(0)
+
+
+msg_erro1="  -> Type the target address"
+msg_erro2="  -> Example :  192.168.0.1 "
+
+if len(sys.argv) != 2:
+    print("#"*80)
+    print(" ")
+    print("Sintaxe:  python  " + (str(sys.argv[0])) + msg_erro1)
+    print(" Network address Example: ")
+    print(" # python  " + (str(sys.argv[0])) + msg_erro2)
+    print(" ")
+    print("#"*80)
+    print(" ")
+    sys.exit(1) 
+
+host = sys.argv[1] 
+ninja.scan(host, '1-1000')
+
+def scantcp():
+    for port in ninja[host]['tcp']:
+        thisDict = ninja[host]['tcp'][port]
+        print('Host: ' + host +  '    Ports: ' + str(port) + '/open/tcp////')
+
+####
+scantcp()

@@ -1,0 +1,25 @@
+---
+# Verificar a existencia de um arquivo
+- name: Rsyslog - Defining Log server
+  hosts: localhost
+
+  tasks:
+          - name: Identify if there is the /etc/ryslog.d directory
+            command: test -d /etc/rsyslog.d
+            register: result
+            ignore_errors: yes
+
+          - name: STOP Rsyslogd Deamon
+            service:
+                    name: rsyslog
+                    state: stopped
+
+          - name: Config the remote Server Log
+            shell: echo "*.*          @10.0.0.1:514" >> /etc/rsyslog.d/logserver.log
+            when: result.rc == 0
+         
+          - name: START Rsyslogd Deamon
+            service:
+                    name: rsyslog
+                    state: started
+

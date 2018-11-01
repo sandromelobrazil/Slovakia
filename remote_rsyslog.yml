@@ -1,0 +1,8 @@
+---
+# Server logs remote
+- name: Config log remote server by Ansible roles
+  hosts: localhost
+
+  roles:
+          - rsyslogd
+
