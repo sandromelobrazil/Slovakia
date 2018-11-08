@@ -1,5 +1,5 @@
-# Slovenia
-Slovenia
+#  Slovakia
+
 Question 1: Script Python
 
 Code script getweather.py:
